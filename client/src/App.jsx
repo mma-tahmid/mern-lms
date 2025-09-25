@@ -1,23 +1,66 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
+
 import './App.css'
-import Login_RegistrationPage from './Pages/Login_RegistrationPage'
 
-//import LoginPage from './Pages/Login_RegistrationPage'
+import React from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import LoginRegistrationPage from './Pages/LoginRegistrationPage';
 
 
-function App() {
+const App = () => {
+
+  const appRouter = createBrowserRouter([
+
+    {
+      path: '/',
+      element: <LoginRegistrationPage />
+    },
+
+    // {
+    //   path: '/product-details',
+    //   element: <ProductDetailsPage />
+    // },
+
+    // {
+    //   path: '/shopping-cart',
+    //   element: <ShoppingCartPage />
+    // },
+
+    // other public and admin routes...
+
+    // {
+    //   path: '/admin',
+    //   element: <AdminLayout />,
+    //   children: [
+    //     { path: 'navbar', element: <NavbarPage /> },
+    //     { path: 'banner', element: <BannerPage /> },
+    //     // { path: 'about', element: <AboutPage /> },
+    //     // { path: 'service', element: <ServicePage /> },
+    //     // { path: 'resume', element: <ResumePage /> },
+    //     // { path: 'portfolio', element: <PortfolioPage /> },
+    //     // { path: 'testimonial', element: <TestimonialPage /> },
+    //     // { path: 'partner', element: <PartnerPage /> },
+    //     // { path: 'blog', element: <BlogPage /> },
+    //     // { path: 'contact', element: <ContactPage /> },
+    //     // { path: 'footer', element: <FooterPage /> },
+    //   ]
+    // }
+
+  ]);
+
 
   return (
 
     <>
-
-      <Login_RegistrationPage />
-
+      <RouterProvider router={appRouter} />
 
     </>
-  )
-}
 
-export default App
+
+  );
+};
+
+export default App;
+
+
+
+

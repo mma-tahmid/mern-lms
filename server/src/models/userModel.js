@@ -8,23 +8,33 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         enum: ['instructor', 'student'],
-        default: student
+        default: 'student'
     },
 
     enrolledCorses_courseId: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: course // Course Model  
+            ref: 'course' // Course Model  
             //  one user can enrolled many course
         }
+
     ],
 
-    photo: {
-        publicId: { type: String },
-        photoUrl: { type: String },
-        photofileName: { type: String },
-        default: ""
-    },
+    image: {
+        imageDetails: {
+            publicId: { type: String },
+            photoUrl: { type: String },
+            photofileName: { type: String }
+        },
+        default: {} // ✅ default empty object default:""
+    }
+
+    // photo: {
+    //     publicId: { type: String },
+    //     photoUrl: { type: String },
+    //     photofileName: { type: String },
+    //     default: ""
+    // },
 
 }, { timestamps: true, versionKey: false })
 

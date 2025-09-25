@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-
 import { AppWindowIcon, CodeIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -21,16 +20,16 @@ import {
 } from "@/components/ui/tabs"
 
 
-const LoginPage = () => {
+const LoginRegistrationPage = () => {
 
-    const [signUpInput, setsignUpInput] = useState({
+    const [signUpInputData, setsignUpInputData] = useState({
         fullName: "",
         email: "",
         password: ""
     })
 
 
-    const [loginInput, setLoginInput] = useState({
+    const [loginInputData, setLoginInputData] = useState({
         email: "",
         password: ""
     })
@@ -38,22 +37,58 @@ const LoginPage = () => {
     // console.log(loginInput)
     // console.log(signUpInput)
 
-    const changeInputEventHandeler = (e, types) => {
-        const { name, value } = e.target
+    // Step 1: Function returning a function
+    //     This is called function currying.
+    // const changeInputEventHandeler = (type) => (e) => { ... }
 
-        if (types === "signup") {
-            setsignUpInput({ ...signUpInput, [name]: value })
+    const changeInputEventHandeler = (formType) => (e) => {
+
+        const { name, value } = e.target;
+
+        // name → comes from < Input name = "fullName" />
+        //     value → comes from what user typed
+
+        if (formType === "signup") {
+            setsignUpInputData({ ...signUpInputData, [name]: value });
         } else {
-            setLoginInput({ ...loginInput, [name]: value })
+            setLoginInputData({ ...loginInputData, [name]: value });
         }
+    };
 
-    }
+    //     const changeInputEventHandeler = (type) => {
+    //   return function (e) {
+    //     // logic here
+    //   }
+    // }
 
-    const handleRegistration = async (typess) => {
-        const inputData = typess === "signup" ? signUpInput : loginInput
-        console.log(inputData)
+    //     First function takes type ("signup" or "login")
+    // It returns another function that expects the event (e)
 
 
+    
+
+    const handleRegistrationAndLogin = async (formType) => {
+
+        try {
+
+            if (formType === "signup") {
+
+                //const inputData = signUpInput;
+
+                console.log("Signup Data:", signUpInputData);
+
+                //const res = await axios.post("/api/register", inputData);
+                //console.log("Signup success:", res.data);
+            } else if (formType === "login") {
+                //const inputData = loginInput;
+                console.log("Login Data:", loginInputData);
+
+                //const res = await axios.post("/api/login", inputData);
+                //console.log("Login success:", res.data);
+            }
+        } catch (err) {
+            console.error("Error:", err.response ? err.response.data : err.message);
+        }
     }
 
 
@@ -95,8 +130,8 @@ const LoginPage = () => {
                                     placeholder="Enter Your Name"
                                     required="true"
                                     name="fullName"
-                                    onChange={(e) => changeInputEventHandeler(e, "signup")}
-                                    value={signUpInput.fullName}
+                                    onChange={changeInputEventHandeler("signup")}
+                                    value={signUpInputData.fullName}
 
                                 />
                             </div>
@@ -108,8 +143,8 @@ const LoginPage = () => {
                                     placeholder="Enter your email"
                                     required="true"
                                     name="email"
-                                    onChange={(e) => changeInputEventHandeler(e, "signup")}
-                                    value={signUpInput.email}
+                                    onChange={changeInputEventHandeler("signup")}
+                                    value={signUpInputData.email}
                                 />
                             </div>
 
@@ -120,14 +155,14 @@ const LoginPage = () => {
                                     placeholder="Enter your Password"
                                     required="true"
                                     name="password"
-                                    onChange={(e) => changeInputEventHandeler(e, "signup")}
-                                    value={signUpInput.password}
+                                    onChange={changeInputEventHandeler("signup")}
+                                    value={signUpInputData.password}
                                 />
                             </div>
 
                         </CardContent>
                         <CardFooter>
-                            <Button onClick={() => handleRegistration("signup")}>Signup</Button>
+                            <Button onClick={() => handleRegistrationAndLogin("signup")}>Signup</Button>
                         </CardFooter>
                     </Card>
                 </TabsContent>
@@ -151,8 +186,8 @@ const LoginPage = () => {
                                     placeholder="Enter your email"
                                     required="true"
                                     name="email"
-                                    onChange={(e) => changeInputEventHandeler(e, "login")}
-                                    value={loginInput.email}
+                                    onChange={changeInputEventHandeler("login")}
+                                    value={loginInputData.email}
                                 />
                             </div>
 
@@ -163,13 +198,13 @@ const LoginPage = () => {
                                     placeholder="Enter your Password"
                                     required="true"
                                     name="password"
-                                    onChange={(e) => changeInputEventHandeler(e, "login")}
-                                    value={loginInput.password}
+                                    onChange={changeInputEventHandeler("login")}
+                                    value={loginInputData.password}
                                 />
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Button onClick={() => handleRegistration("login")}>Login</Button>
+                            <Button onClick={() => handleRegistrationAndLogin("login")}>Login</Button>
                         </CardFooter>
                     </Card>
                 </TabsContent>
@@ -181,4 +216,36 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default LoginRegistrationPage;
+
+
+// 2. Curried arrow function with return
+
+// For your React example:
+
+// const changeInputEventHandeler = (type) => {
+//     // outer function has braces, so we must use return
+//     return (e) => {
+//         const { name, value } = e.target;
+
+//         if (type === "signup") {
+//             setsignUpInput({ ...signUpInput, [name]: value });
+//         } else {
+//             setLoginInput({ ...loginInput, [name]: value });
+//         }
+//     };
+// };
+
+
+// Outer function: (type) => { ... } → has braces
+// We explicitly return the inner function (e) => { ... }
+// Inner function: still has braces because we are doing multiple lines, but it doesn’t need a return unless you want to return something else
+
+
+//     So summary:
+
+// Use braces { } → you must use return if you want the outer function to return something
+
+// Without braces → implicit return, no return keyword needed
+
+// In curried functions, either style works, but with return it looks explicit and sometimes clearer.
